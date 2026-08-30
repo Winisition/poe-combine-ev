@@ -90,7 +90,7 @@ def make_profit_gradient(df, column='Profit Margin (Chaos)'):
 # Streamlit header
 
 st.set_page_config(page_title="PoE Combine EV", layout="wide")
-st_autorefresh(interval=900_000, key="datarefresh")  # 900,000 ms = 15 min
+st.markdown('<meta http-equiv="refresh" content="900">', unsafe_allow_html=True)
 st.title("PoE Currency Buy Signals")
 
 # Streamlit metrics
