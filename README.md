@@ -37,11 +37,11 @@ How it works
 
 1. Ingest (ingest.py) pulls current prices from the poe.ninja API for scarabs, essences and currency, plus a static scarab drop-weight reference dataset. This file writes the raw JSON to a Unity Catalog Volume, and includes both a current snapshot and a timestamped historical copy so price history can accumulate over time.
 
-2. Transform (PySpark notebook in Databricks) flattens the nested API response and current joins the scarab / essence prices against their respective weights to convert into probabilities, and subsequently get the EV of an output. The results are written to Delta tables in Unity Catalog.
+2. Transform (PySpark notebook in Databricks) flattens the nested API response and computes EV separately per mechanic. Scarab prices are joined against the drop-weight dataset to derive probability-weighted EV, while essence EV is the average price within each category. The results are written to Delta tables in Unity Catalog.
 
 3. Orchestration (Databricks Jobs) Ingest and Transform are run as two tasks in a single job scheduled every 15 mins, with transform dependent on ingestion succeeding.
 
-4. Dashboard (Streamlit on Databricks Apps). Databricks Apps reads `app.py` and `app.yaml` directly from GitHub repo, which defines the launch command and the SQL warehouse path. We also ise SQL editor to grant (`USE CATALOG`, `USE SCHEMA`, `SELECT`) so that it can read the Delta tables.
+4. Dashboard (Streamlit on Databricks Apps). Databricks Apps reads `app.py` and `app.yaml` directly from GitHub repo, which defines the launch command and the SQL warehouse path. We also use SQL editor to grant (`USE CATALOG`, `USE SCHEMA`, `SELECT`) so that it can read the Delta tables.
 
 
 A note on the drop-weight data
