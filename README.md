@@ -12,6 +12,7 @@ Essences are re-rolled into another essence of the same category using Harvest l
 This pipeline ingests live market prices every 15 minutes, computes EV per item, and surfaces the mispriced ones on a dashboard.
 
 Live dashboard: https://poe-combine-ev-7474656356418861.aws.databricksapps.com
+![Dashboard view](image.png)
 
 Architecture
 poe.ninja API
