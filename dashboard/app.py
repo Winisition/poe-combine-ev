@@ -129,6 +129,7 @@ with col_left:
     st.subheader("Scarab EV")
     scarab_search = st.text_input("Search scarabs:", key="scarab_search")
     df_scarab_display = df_scarab[df_scarab['Scarab'].str.contains(scarab_search, case=False, na=False)] if scarab_search else df_scarab
+    df_scarab_display = df_scarab_display.round(2)
     if df_scarab_display.empty:
         st.info('No matching scarabs found.')
     else:
@@ -148,6 +149,7 @@ with col_right:
     st.subheader("Essence EV")
     essence_search = st.text_input("Search essences:", key="essence_search")
     df_essence_display = df_essence[df_essence['Essence'].str.contains(essence_search, case=False, na=False)] if essence_search else df_essence
+    df_essence_display = df_essence_display.round(2)
     if df_essence_display.empty:
         st.info('No matching essences found.')
     else:
