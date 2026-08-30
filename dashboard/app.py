@@ -4,6 +4,9 @@ import pandas as pd
 import streamlit as st
 from datetime import datetime, timezone, timedelta
 
+st.write("Env vars present:", sorted(os.environ.keys()))
+st.stop()
+
 # Read from databricks
 
 def format_name(name: str) -> str:
