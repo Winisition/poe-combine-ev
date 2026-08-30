@@ -4,6 +4,8 @@ import pandas as pd
 import streamlit as st
 from datetime import datetime, timezone, timedelta
 
+st.autorefresh(interval=900_000, key="datarefresh")  # 900,000 ms = 15 min
+
 # Read from databricks
 
 def format_name(name: str) -> str:
