@@ -3,8 +3,7 @@ from databricks import sql
 import pandas as pd
 import streamlit as st
 from datetime import datetime, timezone, timedelta
-
-st.autorefresh(interval=900_000, key="datarefresh")  # 900,000 ms = 15 min
+from streamlit_autorefresh import st_autorefresh
 
 # Read from databricks
 
@@ -91,6 +90,7 @@ def make_profit_gradient(df, column='Profit Margin (Chaos)'):
 # Streamlit header
 
 st.set_page_config(page_title="PoE Combine EV", layout="wide")
+st_autorefresh(interval=900_000, key="datarefresh")  # 900,000 ms = 15 min
 st.title("PoE Currency Buy Signals")
 
 # Streamlit metrics
