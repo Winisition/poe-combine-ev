@@ -1,4 +1,3 @@
-from dotenv import load_dotenv
 import os
 from databricks import sql
 import pandas as pd
@@ -20,8 +19,6 @@ def to_sgt(timestamp):
     parsed = datetime.strptime(timestamp, '%Y-%m-%d_%H-%M-%S').replace(tzinfo=timezone.utc)
     return parsed.astimezone(timezone(timedelta(hours=8)))
 
-
-load_dotenv()
 
 connection = sql.connect(
     server_hostname=os.environ["DATABRICKS_HOST"],
