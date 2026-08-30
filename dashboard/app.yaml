@@ -3,4 +3,4 @@ env:
   - name: 'DATABRICKS_HTTP_PATH'
     value: '/sql/1.0/warehouses/16decc52a79ed8f8'
   - name: 'DATABRICKS_TOKEN'
-    valueFrom: 'db-token'
+    valueFrom: 'poe-app-secrets/db-token'
