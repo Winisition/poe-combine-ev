@@ -4,9 +4,6 @@ import pandas as pd
 import streamlit as st
 from datetime import datetime, timezone, timedelta
 
-st.write("Env vars present:", sorted(os.environ.keys()))
-st.stop()
-
 # Read from databricks
 
 def format_name(name: str) -> str:
@@ -23,10 +20,16 @@ def to_sgt(timestamp):
     return parsed.astimezone(timezone(timedelta(hours=8)))
 
 
+import os
+from databricks.sdk.core import Config
+from databricks import sql
+
+cfg = Config()  # auto-reads DATABRICKS_HOST / CLIENT_ID / CLIENT_SECRET
+
 connection = sql.connect(
-    server_hostname=os.environ["DATABRICKS_HOST"],
+    server_hostname=cfg.host,
     http_path=os.environ["DATABRICKS_HTTP_PATH"],
-    access_token=os.environ["DATABRICKS_TOKEN"],
+    credentials_provider=lambda: cfg.authenticate,
 )
 
 with connection as c:
