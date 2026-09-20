@@ -27,15 +27,31 @@ from databricks import sql
 
 cfg = Config()  # auto-reads DATABRICKS_HOST / CLIENT_ID / CLIENT_SECRET
 
-connection = sql.connect(
-    server_hostname=cfg.host,
-    http_path=os.environ["DATABRICKS_HTTP_PATH"],
-    credentials_provider=lambda: cfg.authenticate,
-)
+def connect():
+    return sql.connect(
+        server_hostname=cfg.host,
+        http_path=os.environ["DATABRICKS_HTTP_PATH"],
+        credentials_provider=lambda: cfg.authenticate,
+    )
 
-with connection as c:
-    df_scarab = pd.read_sql("SELECT * FROM workspace.poe_economy.scarab_ev", c)
-    df_essence = pd.read_sql("SELECT * FROM workspace.poe_economy.essence_ev", c)
+def latest_ingest():
+    # cheap check, runs every refresh
+    with connect() as c:
+        return pd.read_sql(
+            "SELECT (SELECT MAX(ingested_at) FROM workspace.poe_economy.scarab_ev) AS s, "
+            "(SELECT MAX(ingested_at) FROM workspace.poe_economy.essence_ev) AS e", c
+        ).iloc[0].tolist()
+
+@st.cache_data
+def load_tables(version):
+    # `version` is only the cache key: full tables reload only when the data changed
+    with connect() as c:
+        return (
+            pd.read_sql("SELECT * FROM workspace.poe_economy.scarab_ev", c),
+            pd.read_sql("SELECT * FROM workspace.poe_economy.essence_ev", c),
+        )
+
+df_scarab, df_essence = load_tables(tuple(latest_ingest()))
 
 timestamp = to_sgt(df_scarab['ingested_at'].iloc[0])
 current_league = df_scarab['current_league'].iloc[0]
@@ -90,7 +106,7 @@ def make_profit_gradient(df, column='Profit Margin (Chaos)'):
 # Streamlit header
 
 st.set_page_config(page_title="PoE Combine EV", layout="wide")
-st_autorefresh(interval=15 * 60 * 1000, key="autorefresh")  # reruns the script, re-querying Databricks
+st_autorefresh(interval=60 * 1000, key="autorefresh")  # reruns the script, re-querying Databricks
 st.title("PoE Currency Buy Signals")
 
 # Streamlit metrics
