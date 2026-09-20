@@ -3,7 +3,6 @@ from databricks import sql
 import pandas as pd
 import streamlit as st
 from datetime import datetime, timezone, timedelta
-from streamlit_autorefresh import st_autorefresh
 
 # Read from databricks
 
