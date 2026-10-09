@@ -10,6 +10,8 @@ A scheduled Databricks pipeline that finds underpriced items in Path of Exile's 
 
 ![Dashboard view](docs/dashboard.png)
 
+*The dashboard runs on Databricks Apps, which requires a Databricks sign-in, so there's no public live link. On Free Edition, apps also stop after 24 hours until restarted.*
+
 ## What it does
 
 Path of Exile has an in-game economy where players trade currencies at floating, player-set prices. Two crafting mechanics turn items into random outputs with known odds, so each input has a computable expected value (EV). When an item trades below its EV, it's worth buying.
@@ -98,19 +100,6 @@ Python ingestion  ──────────►  Unity Catalog Volume  (raw 
 
 No secrets are needed in the repo. The job uses the workspace's built-in authentication, and the app authenticates as its service principal.
 
-### Usage
-
-- **Dashboard:** open the app from **Compute → Apps**. Databricks Apps requires a Databricks sign-in, so it isn't publicly viewable. On Free Edition, apps stop after 24 hours, so restart it from the app page if needed.
-- **Query the results directly:**
-  ```sql
-  SELECT id, total_cost, profit_margin_chaos
-  FROM workspace.poe_economy.scarab_ev
-  WHERE Action = 'Buy'
-  ORDER BY profit_margin_chaos DESC;
-  ```
-  `essence_ev` has the same columns.
-- **Refresh on demand:** click **Run now** on the job.
-
 ### Project structure
 
 ```
@@ -131,8 +120,10 @@ docs/                # README screenshots
 - **Databricks docs:** [Databricks Apps](https://docs.databricks.com/aws/en/dev-tools/databricks-apps/) · [Jobs](https://docs.databricks.com/aws/en/jobs/) · [Free Edition limitations](https://docs.databricks.com/aws/en/getting-started/free-edition-limitations)
 - **Data sources:** prices from [poe.ninja](https://poe.ninja), scarab drop weights from [xddbsns.com](https://xddbsns.com).
 
-## Maintainers and contributing
+## Maintainer
 
 Maintained by [@Winisition](https://github.com/Winisition).
 
-Contributions are welcome. Open an issue to discuss a change before sending a pull request.
+## License
+
+[MIT](LICENSE)
