@@ -1,11 +1,12 @@
 import os
+from datetime import datetime, timezone, timedelta
 from databricks import sql
+from databricks.sdk.core import Config
 import pandas as pd
 import streamlit as st
 from streamlit_autorefresh import st_autorefresh
 
 st.set_page_config(page_title="PoE Combine EV", layout="wide")  # must be the first st command
-from datetime import datetime, timezone, timedelta
 
 # Read from databricks
 
@@ -21,11 +22,6 @@ def to_sgt(timestamp):
 
     parsed = datetime.strptime(timestamp, '%Y-%m-%d_%H-%M-%S').replace(tzinfo=timezone.utc)
     return parsed.astimezone(timezone(timedelta(hours=8)))
-
-
-import os
-from databricks.sdk.core import Config
-from databricks import sql
 
 cfg = Config()  # auto-reads DATABRICKS_HOST / CLIENT_ID / CLIENT_SECRET
 
@@ -147,26 +143,22 @@ col_left, col_spacer, col_right = st.columns([10, 1, 10])
 with col_left:
     st.subheader("Scarab EV")
     scarab_search = st.text_input("Search scarabs:", key="scarab_search")
-    df_scarab_display = df_scarab[df_scarab['Scarab'].str.contains(scarab_search, case=False, na=False)] if scarab_search else df_scarab
+    df_scarab_display = df_scarab[df_scarab['Scarab'].str.contains(scarab_search, case=False, na=False, regex=False)] if scarab_search else df_scarab
     if df_scarab_display.empty:
         st.info('No matching scarabs found.')
     else:
         st.dataframe(
             df_scarab_display.style.apply(
                 make_profit_gradient(df_scarab_display), subset=['Profit Margin (Chaos)']
-            ).format(precision=2),  # Styler formatting overrides column_config
+            ).format(precision=2),
             use_container_width=True,
             hide_index=True,
-            column_config={
-                "Cost (Chaos)": st.column_config.NumberColumn(format="%.2f"),
-                "Profit Margin (Chaos)": st.column_config.NumberColumn(format="%.2f"),
-            }
         )
 
 with col_right:
     st.subheader("Essence EV")
     essence_search = st.text_input("Search essences:", key="essence_search")
-    df_essence_display = df_essence[df_essence['Essence'].str.contains(essence_search, case=False, na=False)] if essence_search else df_essence
+    df_essence_display = df_essence[df_essence['Essence'].str.contains(essence_search, case=False, na=False, regex=False)] if essence_search else df_essence
     if df_essence_display.empty:
         st.info('No matching essences found.')
     else:
@@ -176,8 +168,4 @@ with col_right:
             ).format(precision=2),
             use_container_width=True,
             hide_index=True,
-            column_config={
-                "Cost (Chaos)": st.column_config.NumberColumn(format="%.2f"),
-                "Profit Margin (Chaos)": st.column_config.NumberColumn(format="%.2f"),
-            }
         )

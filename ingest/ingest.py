@@ -2,7 +2,6 @@ from databricks.sdk import WorkspaceClient
 import requests
 import json
 from datetime import datetime, timezone
-w = WorkspaceClient()
 
 def get_current_league():
 
@@ -56,7 +55,6 @@ def get_scarab_weights(league):
 
     ingested_at = datetime.now(timezone.utc).strftime("%Y-%m-%d_%H-%M-%S")
     headers = {"User-Agent": "poe_combine_ev"}
-    w = WorkspaceClient()
     databricks_latest_dir = "/Volumes/workspace/poe_economy/raw_data/Scarab_Weights.json"
 
     resp = requests.get(
