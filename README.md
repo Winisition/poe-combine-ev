@@ -11,8 +11,16 @@ Essences are re-rolled into another essence of the same category using Harvest l
 
 This pipeline ingests live market prices every 15 minutes, computes EV per item, and surfaces the mispriced ones on a dashboard.
 
-Live dashboard: https://poe-combine-ev-7474656356418861.aws.databricksapps.com
-![Dashboard view](image.png)
+The dashboard runs on Databricks Apps, which requires a Databricks sign-in, so it isn't publicly viewable. Screenshot below:
+
+![Dashboard view](docs/dashboard.png)
+*Buy-signal counts, plus Scarab and Essence EV tables colored by profit margin. "Data as of" shows the latest pipeline snapshot, and the page auto-refreshes.*
+
+![Search filter](docs/search.png)
+*Each table has its own search box.*
+
+![Databricks job](docs/pipeline.png)
+*The Databricks Job: `run_ingest_py` feeds `run_transform`, scheduled every 15 minutes.*
 
 Architecture
 poe.ninja API
