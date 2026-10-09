@@ -14,7 +14,7 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SCRIPT_DIR, "raw")
 HIST_DIR = os.path.join(DATA_DIR, "historical")
 
-load_dotenv()
+load_dotenv(os.path.join(SCRIPT_DIR, ".env"))
 
 DATABRICKS_HOST = os.environ["DATABRICKS_HOST"]
 DATABRICKS_TOKEN = os.environ["DATABRICKS_TOKEN"]
