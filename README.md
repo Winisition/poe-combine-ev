@@ -55,7 +55,7 @@ How it works
 
 A note on the drop-weight data
 
-The EV calculation depends on knowing how likely each output item is. These probabilities are not published by the game's developer, and come from a community-maintained dataset built by aggregating hundreds of thousands of player-submitted vendor results. The weights are statistically inferred, and the actual weights could differ significantly. The weights dataset is also a point-in-time snapshot and is not re-fetched on the pipeline's schedule, which can cause inaccuracy if balance patches change drop pools.
+The EV calculation depends on knowing how likely each output item is. These probabilities are not published by the game's developer, and come from a community-maintained dataset built by aggregating hundreds of thousands of player-submitted vendor results. The weights are statistically inferred, and the actual weights could differ significantly. The weights are re-fetched from the community source on every pipeline run, but that dataset is itself a snapshot maintained by its authors, so it can lag behind balance patches that change drop pools.
 
 
 Prices, by contrast, are pulled live from poe.ninja on every run and are as current as the source allows.
