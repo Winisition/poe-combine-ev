@@ -154,7 +154,7 @@ with col_left:
         st.dataframe(
             df_scarab_display.style.apply(
                 make_profit_gradient(df_scarab_display), subset=['Profit Margin (Chaos)']
-            ),
+            ).format(precision=2),  # Styler formatting overrides column_config
             use_container_width=True,
             hide_index=True,
             column_config={
@@ -173,7 +173,7 @@ with col_right:
         st.dataframe(
             df_essence_display.style.apply(
                 make_profit_gradient(df_essence_display), subset=['Profit Margin (Chaos)']
-            ),
+            ).format(precision=2),
             use_container_width=True,
             hide_index=True,
             column_config={
